@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VelveteBerry - Información y trazabilidad de nuestros frutos frescos.">
+<title>VelveteBerry | Trazabilidad</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#30252a;
+ background:linear-gradient(rgba(255,250,251,.86),rgba(255,250,251,.92)),
+ url("fondo-velveteberry.png") center top/cover fixed no-repeat;
+}
+.encabezado{text-align:center;padding:34px 18px 26px;background:rgba(255,255,255,.88);border-bottom:1px solid rgba(102,31,61,.14)}
+.marca{margin:0;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:clamp(31px,8vw,48px);letter-spacing:1px}
+.subtitulo{margin:8px 0 0;color:#725d66;font-size:15px;letter-spacing:1.2px}
+.contenedor{width:min(560px,calc(100% - 30px));margin:25px auto 35px}
+.tarjeta{background:rgba(255,255,255,.94);border:1px solid rgba(107,35,66,.12);border-radius:20px;padding:25px;margin-bottom:18px;box-shadow:0 8px 28px rgba(70,30,45,.10)}
+.titulo{margin:0 0 18px;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:25px}
+.lote{display:inline-block;margin-bottom:18px;padding:7px 12px;border-radius:20px;background:#f1dfe6;color:#6b2342;font-size:13px;font-weight:bold;letter-spacing:.5px}
+.dato{padding:15px 0;border-bottom:1px solid #eee5e8;line-height:1.55}
+.dato:last-child{border-bottom:none}
+.dato strong{display:block;margin-bottom:5px;color:#6b2342;font-size:13px;letter-spacing:.8px}
+.promocion{text-align:center;background:rgba(107,35,66,.94);color:white;border-radius:20px;padding:28px 22px;box-shadow:0 8px 28px rgba(70,30,45,.14)}
+.promocion h2{margin:0 0 12px;font-family:Georgia,"Times New Roman",serif;font-size:27px}
+.promocion p{margin:8px auto;max-width:430px;line-height:1.55}
+.descuento{font-size:18px;font-weight:bold;margin-top:16px!important}
+.instagram{display:inline-block;margin-top:16px;padding:12px 23px;border:1px solid rgba(255,255,255,.65);border-radius:30px;color:white;text-decoration:none;font-weight:bold;letter-spacing:.3px;background:rgba(255,255,255,.10);transition:.2s ease}
+.instagram:hover{background:white;color:#6b2342}
+.condiciones{font-size:12px;opacity:.82;margin-top:15px!important}
+.pie{text-align:center;color:#725d66;font-size:12px;line-height:1.6;padding:8px 10px 20px}
+@media(max-width:480px){.contenedor{width:min(100% - 20px,560px);margin-top:15px}.tarjeta{padding:20px}}
+</style>
+</head>
+<body>
+<header class="encabezado">
+<h1 class="marca">VelveteBerry</h1>
+<p class="subtitulo">Fresas y zarzamoras frescas</p>
+</header>
+
+<main class="contenedor">
+<section class="tarjeta">
+<h2 class="titulo">Información de tu producto</h2>
+<div class="lote" id="numeroLote">LOTE</div>
+<div class="dato"><strong>FECHA DE COSECHA</strong><span id="fechaCosecha"></span></div>
+<div class="dato"><strong>ORIGEN</strong><span id="origen"></span></div>
+<div class="dato"><strong>EMPAQUETADO</strong><span id="empaquetado"></span></div>
+<div class="dato"><strong>TRANSPORTE</strong><span id="transporte"></span></div>
+</section>
+
+<section class="promocion">
+<h2>Comparte tu experiencia</h2>
+<p>Publica una historia en Instagram con tus productos VelveteBerry y etiquétanos.</p>
+<p class="descuento">Obtén 10% de descuento en tu siguiente compra.</p>
+<a class="instagram" href="https://www.instagram.com/velveteberry/" target="_blank" rel="noopener noreferrer">
+Instagram · @velveteberry
+</a>
+<p class="condiciones">El descuento se aplica en la siguiente compra después de realizar la publicación y etiquetar la cuenta oficial de VelveteBerry.</p>
+</section>
+
+<footer class="pie">VelveteBerry · Calidad y frescura en cada presentación.</footer>
+</main>
+
+<script>
+/*
+BASE DE LOTES
+Para cambiar un lote, modifica los datos dentro de LOTES y vuelve a subir index.html.
+Para crear un lote nuevo, copia un bloque y cambia su número.
+
+Ejemplos de enlaces para los QR:
+?lote=001
+?lote=002
+?lote=003
+*/
+
+const LOTES = {
+ "001": {
+   fechaCosecha: "24 de septiembre de 2026",
+   origen: "Guatemala",
+   empaquetado: "Empaquetado en clamshell VelveteBerry para proteger la frescura y calidad del producto.",
+   transporte: "Transporte refrigerado para conservar la frescura durante la distribución."
+ },
+ "002": {
+   fechaCosecha: "25 de septiembre de 2026",
+   origen: "Guatemala",
+   empaquetado: "Empaquetado en clamshell VelveteBerry para proteger la frescura y calidad del producto.",
+   transporte: "Transporte refrigerado para conservar la frescura durante la distribución."
+ }
+ // "003": {
+ //   fechaCosecha: "26 de septiembre de 2026",
+ //   origen: "Guatemala",
+ //   empaquetado: "Descripción del empaquetado.",
+ //   transporte: "Descripción del transporte."
+ // }
+};
+
+const parametros = new URLSearchParams(window.location.search);
+const loteSolicitado = parametros.get("lote") || "001";
+const lote = LOTES[loteSolicitado] || LOTES["001"];
+
+document.getElementById("numeroLote").textContent =
+ "LOTE " + (LOTES[loteSolicitado] ? loteSolicitado : "001");
+document.getElementById("fechaCosecha").textContent = lote.fechaCosecha;
+document.getElementById("origen").textContent = lote.origen;
+document.getElementById("empaquetado").textContent = lote.empaquetado;
+document.getElementById("transporte").textContent = lote.transporte;
+</script>
+</body>
+</html>
