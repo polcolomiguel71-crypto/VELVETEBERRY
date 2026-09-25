@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VelveteBerry - Genera códigos QR de trazabilidad para tus lotes de frutos frescos.">
+<title>VelveteBerry | Generador de códigos QR</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#30252a;
+ background:url("fondo-velveteberry.png") center 70%/cover fixed no-repeat;
+}
+.encabezado{position:relative;text-align:center;padding:34px 18px 26px;background:transparent}
+.logo-marca{position:absolute;top:14px;left:14px;width:64px;height:64px;border-radius:50%;object-fit:cover;box-shadow:0 4px 14px rgba(70,30,45,.28);border:2px solid rgba(255,255,255,.85)}
+.marca{margin:0;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:clamp(31px,8vw,48px);letter-spacing:1px}
+.subtitulo{margin:8px 0 0;color:#725d66;font-size:15px;letter-spacing:1.2px}
+.contenedor{width:min(560px,calc(100% - 30px));margin:25px auto 35px}
+.tarjeta{background:rgba(255,255,255,.94);border:1px solid rgba(107,35,66,.12);border-radius:20px;padding:25px;margin-bottom:18px;box-shadow:0 8px 28px rgba(70,30,45,.10)}
+.titulo{margin:0 0 6px;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:25px}
+.descripcion{margin:0 0 20px;color:#725d66;font-size:14px;line-height:1.5}
+.campo{margin-bottom:16px}
+.campo label{display:block;margin-bottom:6px;color:#6b2342;font-size:13px;font-weight:bold;letter-spacing:.5px}
+.campo input,.campo textarea{width:100%;padding:11px 13px;border:1px solid #e3d3da;border-radius:10px;font-size:14px;font-family:inherit;color:#30252a;background:#fffdfe}
+.campo textarea{resize:vertical;min-height:60px}
+.campo input:focus,.campo textarea:focus{outline:none;border-color:#6b2342}
+.boton{display:block;width:100%;padding:14px;margin-top:6px;border:none;border-radius:30px;background:#6b2342;color:white;font-size:15px;font-weight:bold;letter-spacing:.4px;cursor:pointer;transition:.2s ease}
+.boton:hover{background:#521a33}
+.resultado{text-align:center;display:none}
+.resultado.visible{display:block}
+.resultado canvas{max-width:100%;height:auto;border-radius:12px;box-shadow:0 4px 16px rgba(70,30,45,.12)}
+.enlace{word-break:break-all;font-size:12px;color:#725d66;margin:14px 0}
+.acciones{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.acciones a,.acciones button{padding:10px 18px;border-radius:24px;font-size:13px;font-weight:bold;text-decoration:none;cursor:pointer;border:1px solid #6b2342;color:#6b2342;background:white}
+.acciones a:hover,.acciones button:hover{background:#6b2342;color:white}
+.promocion{text-align:center;background:rgba(107,35,66,.94);color:white;border-radius:20px;padding:28px 22px;box-shadow:0 8px 28px rgba(70,30,45,.14)}
+.promocion h2{margin:0 0 12px;font-family:Georgia,"Times New Roman",serif;font-size:27px}
+.promocion p{margin:8px auto;max-width:430px;line-height:1.55}
+.descuento{font-size:18px;font-weight:bold;margin-top:16px!important}
+.instagram{display:inline-block;margin-top:16px;padding:12px 23px;border:1px solid rgba(255,255,255,.65);border-radius:30px;color:white;text-decoration:none;font-weight:bold;letter-spacing:.3px;background:rgba(255,255,255,.10);transition:.2s ease}
+.instagram:hover{background:white;color:#6b2342}
+.condiciones{font-size:12px;opacity:.82;margin-top:15px!important}
+.pie{text-align:center;color:#725d66;font-size:12px;line-height:1.6;padding:8px 10px 20px}
+@media(max-width:480px){.contenedor{width:min(100% - 20px,560px);margin-top:15px}.tarjeta{padding:20px}}
+</style>
+</head>
+<body>
+<header class="encabezado">
+<img class="logo-marca" src="assets/logo-velveteberry.png" alt="Logo VelveteBerry">
+<h1 class="marca">VelveteBerry</h1>
+<p class="subtitulo">Generador de códigos QR de trazabilidad</p>
+</header>
+
+<main class="contenedor">
+<section class="tarjeta">
+<h2 class="titulo">Datos del lote</h2>
+<p class="descripcion">Completa la información y genera el código QR para imprimir en la etiqueta del empaque.</p>
+
+<form id="formularioQR">
+<div class="campo">
+<label for="lote">NÚMERO DE LOTE</label>
+<input type="text" id="lote" placeholder="Ej. 001" required>
+</div>
+<div class="campo">
+<label for="fechaCorte">FECHA DE CORTE</label>
+<input type="date" id="fechaCorte" required>
+</div>
+<div class="campo">
+<label for="origen">ORIGEN</label>
+<input type="text" id="origen" placeholder="Ej. Guatemala" required>
+</div>
+<div class="campo">
+<label for="empacado">EMPACADO</label>
+<textarea id="empacado" placeholder="Ej. Empacado en clamshell VelveteBerry para proteger la frescura y calidad del producto." required></textarea>
+</div>
+<div class="campo">
+<label for="transporte">TRANSPORTE</label>
+<textarea id="transporte" placeholder="Ej. Transporte refrigerado para conservar la frescura durante la distribución." required></textarea>
+</div>
+<button type="submit" class="boton">Generar código QR</button>
+</form>
+</section>
+
+<section class="tarjeta resultado" id="resultado">
+<h2 class="titulo">Tu código QR</h2>
+<canvas id="canvasQR"></canvas>
+<p class="enlace" id="enlaceGenerado"></p>
+<div class="acciones">
+<button type="button" id="descargar">Descargar PNG</button>
+<a id="abrirEnlace" href="#" target="_blank" rel="noopener noreferrer">Ver página del lote</a>
+</div>
+</section>
+
+<section class="promocion">
+<h2>Comparte tu experiencia</h2>
+<p>Etiquétanos en una historia de Instagram con tus productos VelveteBerry.</p>
+<p class="descuento">En tu siguiente compra te descontamos el 10%.</p>
+<a class="instagram" href="https://www.instagram.com/velveteberry/" target="_blank" rel="noopener noreferrer">
+Instagram · @velveteberry
+</a>
+<p class="condiciones">El descuento se aplica en la siguiente compra después de publicar la historia y etiquetar la cuenta oficial de VelveteBerry.</p>
+</section>
+
+<footer class="pie">VelveteBerry · Calidad y frescura en cada presentación.</footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script>
+const formulario = document.getElementById("formularioQR");
+const resultado = document.getElementById("resultado");
+const canvas = document.getElementById("canvasQR");
+const enlaceGenerado = document.getElementById("enlaceGenerado");
+const abrirEnlace = document.getElementById("abrirEnlace");
+const descargar = document.getElementById("descargar");
+
+formulario.addEventListener("submit", function (evento) {
+ evento.preventDefault();
+
+ const datos = {
+   lote: document.getElementById("lote").value.trim(),
+   fechaCorte: document.getElementById("fechaCorte").value,
+   origen: document.getElementById("origen").value.trim(),
+   empacado: document.getElementById("empacado").value.trim(),
+   transporte: document.getElementById("transporte").value.trim()
+ };
+
+ const parametros = new URLSearchParams(datos);
+ const base = window.location.href.replace(/index\.html?$/, "");
+ const url = base + "trazabilidad.html?" + parametros.toString();
+
+ QRCode.toCanvas(canvas, url, { width: 260, margin: 2, color: { dark: "#30252a", light: "#ffffff" } }, function (error) {
+   if (error) {
+     alert("No se pudo generar el código QR. Intenta de nuevo.");
+     return;
+   }
+   enlaceGenerado.textContent = url;
+   abrirEnlace.href = url;
+   resultado.classList.add("visible");
+   resultado.scrollIntoView({ behavior: "smooth", block: "start" });
+ });
+});
+
+descargar.addEventListener("click", function () {
+ const enlaceDescarga = document.createElement("a");
+ const lote = document.getElementById("lote").value.trim() || "lote";
+ enlaceDescarga.download = "qr-velveteberry-" + lote + ".png";
+ enlaceDescarga.href = canvas.toDataURL("image/png");
+ enlaceDescarga.click();
+});
+</script>
+</body>
+</html>
