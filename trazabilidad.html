@@ -9,10 +9,10 @@
 *{box-sizing:border-box}
 body{
  margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#30252a;
- background:linear-gradient(rgba(255,250,251,.86),rgba(255,250,251,.92)),
- url("fondo-velveteberry.png") center top/cover fixed no-repeat;
+ background:url("fondo-velveteberry.png") center 70%/cover fixed no-repeat;
 }
-.encabezado{text-align:center;padding:34px 18px 26px;background:rgba(255,255,255,.88);border-bottom:1px solid rgba(102,31,61,.14)}
+.encabezado{position:relative;text-align:center;padding:34px 18px 26px;background:transparent}
+.logo-marca{position:absolute;top:14px;left:14px;width:64px;height:64px;border-radius:50%;object-fit:cover;box-shadow:0 4px 14px rgba(70,30,45,.28);border:2px solid rgba(255,255,255,.85)}
 .marca{margin:0;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:clamp(31px,8vw,48px);letter-spacing:1px}
 .subtitulo{margin:8px 0 0;color:#725d66;font-size:15px;letter-spacing:1.2px}
 .contenedor{width:min(560px,calc(100% - 30px));margin:25px auto 35px}
@@ -35,6 +35,7 @@ body{
 </head>
 <body>
 <header class="encabezado">
+<img class="logo-marca" src="assets/logo-velveteberry.png" alt="Logo VelveteBerry">
 <h1 class="marca">VelveteBerry</h1>
 <p class="subtitulo">Fresas y zarzamoras frescas</p>
 </header>
@@ -43,9 +44,9 @@ body{
 <section class="tarjeta">
 <h2 class="titulo">Información de tu producto</h2>
 <div class="lote" id="numeroLote">LOTE</div>
-<div class="dato"><strong>FECHA DE COSECHA</strong><span id="fechaCosecha"></span></div>
+<div class="dato"><strong>FECHA DE CORTE</strong><span id="fechaCorte"></span></div>
 <div class="dato"><strong>ORIGEN</strong><span id="origen"></span></div>
-<div class="dato"><strong>EMPAQUETADO</strong><span id="empaquetado"></span></div>
+<div class="dato"><strong>EMPACADO</strong><span id="empacado"></span></div>
 <div class="dato"><strong>TRANSPORTE</strong><span id="transporte"></span></div>
 </section>
 
@@ -59,52 +60,40 @@ Instagram · @velveteberry
 <p class="condiciones">El descuento se aplica en la siguiente compra después de realizar la publicación y etiquetar la cuenta oficial de VelveteBerry.</p>
 </section>
 
-<footer class="pie">VelveteBerry · Calidad y frescura en cada presentación.</footer>
+<footer class="pie">VelveteBerry · Calidad y frescura en cada presentación. · <a href="index.html" style="color:#725d66">Generar código QR</a></footer>
 </main>
 
 <script>
 /*
-BASE DE LOTES
-Para cambiar un lote, modifica los datos dentro de LOTES y vuelve a subir index.html.
-Para crear un lote nuevo, copia un bloque y cambia su número.
-
-Ejemplos de enlaces para los QR:
-?lote=001
-?lote=002
-?lote=003
+Esta página muestra la información de un lote leyendo los datos que
+vienen codificados en la URL (generados desde index.html, el generador
+de códigos QR). Si el enlace no trae datos, se muestra un lote de
+ejemplo para que la página nunca se vea vacía.
 */
 
-const LOTES = {
- "001": {
-   fechaCosecha: "24 de septiembre de 2026",
-   origen: "Guatemala",
-   empaquetado: "Empaquetado en clamshell VelveteBerry para proteger la frescura y calidad del producto.",
-   transporte: "Transporte refrigerado para conservar la frescura durante la distribución."
- },
- "002": {
-   fechaCosecha: "25 de septiembre de 2026",
-   origen: "Guatemala",
-   empaquetado: "Empaquetado en clamshell VelveteBerry para proteger la frescura y calidad del producto.",
-   transporte: "Transporte refrigerado para conservar la frescura durante la distribución."
- }
- // "003": {
- //   fechaCosecha: "26 de septiembre de 2026",
- //   origen: "Guatemala",
- //   empaquetado: "Descripción del empaquetado.",
- //   transporte: "Descripción del transporte."
- // }
+const EJEMPLO = {
+ lote: "001",
+ fechaCorte: "24 de septiembre de 2026",
+ origen: "Guatemala",
+ empacado: "Empacado en clamshell VelveteBerry para proteger la frescura y calidad del producto.",
+ transporte: "Transporte refrigerado para conservar la frescura durante la distribución."
 };
 
 const parametros = new URLSearchParams(window.location.search);
-const loteSolicitado = parametros.get("lote") || "001";
-const lote = LOTES[loteSolicitado] || LOTES["001"];
 
-document.getElementById("numeroLote").textContent =
- "LOTE " + (LOTES[loteSolicitado] ? loteSolicitado : "001");
-document.getElementById("fechaCosecha").textContent = lote.fechaCosecha;
-document.getElementById("origen").textContent = lote.origen;
-document.getElementById("empaquetado").textContent = lote.empaquetado;
-document.getElementById("transporte").textContent = lote.transporte;
+const datos = {
+ lote: parametros.get("lote") || EJEMPLO.lote,
+ fechaCorte: parametros.get("fechaCorte") || EJEMPLO.fechaCorte,
+ origen: parametros.get("origen") || EJEMPLO.origen,
+ empacado: parametros.get("empacado") || EJEMPLO.empacado,
+ transporte: parametros.get("transporte") || EJEMPLO.transporte
+};
+
+document.getElementById("numeroLote").textContent = "LOTE " + datos.lote;
+document.getElementById("fechaCorte").textContent = datos.fechaCorte;
+document.getElementById("origen").textContent = datos.origen;
+document.getElementById("empacado").textContent = datos.empacado;
+document.getElementById("transporte").textContent = datos.transporte;
 </script>
 </body>
 </html>
