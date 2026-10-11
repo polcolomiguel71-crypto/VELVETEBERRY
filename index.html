@@ -15,6 +15,9 @@ body{
 .logo-marca{position:absolute;top:14px;left:14px;width:64px;height:64px;border-radius:50%;object-fit:cover;box-shadow:0 4px 14px rgba(70,30,45,.28);border:2px solid rgba(255,255,255,.85)}
 .marca{margin:0;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:clamp(31px,8vw,48px);letter-spacing:1px}
 .subtitulo{margin:8px 0 0;color:#725d66;font-size:15px;letter-spacing:1.2px}
+.menu{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.menu a{padding:9px 18px;border-radius:20px;background:#6b2342;color:white;text-decoration:none;font-size:14px;font-weight:bold;box-shadow:0 4px 12px rgba(70,30,45,.2)}
+.menu a:hover{background:#4a2350}
 .contenedor{width:min(560px,calc(100% - 30px));margin:25px auto 35px}
 .tarjeta{background:rgba(255,255,255,.94);border:1px solid rgba(107,35,66,.12);border-radius:20px;padding:25px;margin-bottom:18px;box-shadow:0 8px 28px rgba(70,30,45,.10)}
 .titulo{margin:0 0 6px;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:25px}
@@ -49,6 +52,7 @@ body{
 <img class="logo-marca" src="assets/logo-velveteberry.png" alt="Logo VelveteBerry">
 <h1 class="marca">VelveteBerry</h1>
 <p class="subtitulo">Generador de códigos QR de trazabilidad</p>
+<nav class="menu"><a href="zarzamoras.html">Zarzamoras y recetas</a><a href="zarzamoras.html#canjear">Canjea tu código</a><a href="generar-codigos.html">Generar códigos de descuento</a></nav>
 </header>
 
 <main class="contenedor">
