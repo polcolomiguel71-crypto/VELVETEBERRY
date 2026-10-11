@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Zarzamoras frescas VelveteBerry. Canjea el código de tu empaque y obtén descuento en tu siguiente compra. Recetas con zarzamoras.">
+<title>VelveteBerry | Zarzamoras</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#30252a;background:url("fondo-velveteberry.png") center 70%/cover fixed no-repeat}
+.encabezado{position:relative;text-align:center;padding:34px 18px 26px;background:transparent}
+.logo-marca{position:absolute;top:14px;left:14px;width:64px;height:64px;border-radius:50%;object-fit:cover;box-shadow:0 4px 14px rgba(70,30,45,.28);border:2px solid rgba(255,255,255,.85)}
+.marca{margin:0;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:clamp(31px,8vw,48px);letter-spacing:1px}
+.subtitulo{margin:8px 0 0;color:#725d66;font-size:15px;letter-spacing:1.2px}
+.menu{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.menu a{padding:8px 16px;border-radius:20px;background:rgba(255,255,255,.9);color:#6b2342;text-decoration:none;font-size:13px;font-weight:bold}
+.menu a:hover{background:#6b2342;color:white}
+.contenedor{width:min(680px,calc(100% - 30px));margin:10px auto 35px}
+.tarjeta{background:rgba(255,255,255,.95);border:1px solid rgba(107,35,66,.12);border-radius:20px;padding:25px;margin-bottom:18px;box-shadow:0 8px 28px rgba(70,30,45,.10)}
+.titulo{margin:0 0 10px;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:26px}
+.texto{margin:0 0 12px;line-height:1.6}
+.etiquetas{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.etiquetas span{padding:6px 12px;border-radius:20px;background:#efe3f0;color:#4a2350;font-size:12px;font-weight:bold}
+.canje{background:rgba(74,35,80,.95);color:white}
+.canje .titulo{color:white}
+.campo{margin-bottom:14px}
+.campo label{display:block;margin-bottom:6px;font-size:13px;font-weight:bold;letter-spacing:.5px}
+.campo input{width:100%;padding:12px 13px;border:1px solid rgba(255,255,255,.4);border-radius:10px;font-size:15px;font-family:inherit;color:#30252a;background:white}
+#codigo{text-transform:uppercase;letter-spacing:2px;font-weight:bold}
+.boton{display:block;width:100%;padding:14px;border:none;border-radius:30px;background:white;color:#4a2350;font-size:15px;font-weight:bold;cursor:pointer}
+.boton:disabled{opacity:.6;cursor:wait}
+.mensaje{margin-top:16px;padding:16px;border-radius:14px;text-align:center;display:none;line-height:1.5}
+.mensaje.visible{display:block}
+.mensaje.ok{background:white;color:#30252a}
+.mensaje.error{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4)}
+.cupon{display:block;margin:10px 0;font-size:26px;font-weight:bold;letter-spacing:3px;color:#4a2350}
+.nota{font-size:12px;opacity:.85;margin:12px 0 0}
+.recetas{display:grid;gap:16px}
+.receta{border:1px solid #eee5e8;border-radius:16px;padding:18px;background:#fffdfe}
+.receta h3{margin:0 0 4px;color:#4a2350;font-family:Georgia,"Times New Roman",serif;font-size:20px}
+.receta .meta{margin:0 0 12px;color:#725d66;font-size:13px}
+.receta h4{margin:12px 0 6px;color:#6b2342;font-size:13px;letter-spacing:.6px}
+.receta ul,.receta ol{margin:0;padding-left:20px;line-height:1.6;font-size:14px}
+.pie{text-align:center;color:#30252a;font-size:12px;line-height:1.6;padding:8px 10px 20px;background:rgba(255,255,255,.75);border-radius:14px}
+@media(max-width:480px){.contenedor{width:calc(100% - 20px)}.tarjeta{padding:20px}.logo-marca{width:52px;height:52px}}
+</style>
+</head>
+<body>
+<header class="encabezado">
+<img class="logo-marca" src="assets/logo-velveteberry.png" alt="Logo VelveteBerry">
+<h1 class="marca">VelveteBerry</h1>
+<p class="subtitulo">Zarzamoras frescas</p>
+<nav class="menu">
+<a href="#producto">Producto</a>
+<a href="#canjear">Canjea tu código</a>
+<a href="#recetas">Recetas</a>
+</nav>
+</header>
+
+<main class="contenedor">
+<section class="tarjeta" id="producto">
+<h2 class="titulo">Nuestras zarzamoras</h2>
+<p class="texto">Zarzamoras seleccionadas a mano en su punto exacto de madurez: dulces, jugosas y con ese toque ácido que las hace únicas. Las cosechamos con cuidado y las empacamos en clamshell VelveteBerry para que lleguen a tu mesa tan frescas como en el campo.</p>
+<p class="texto">Ricas en antioxidantes, fibra y vitamina C, son perfectas para comer solas, en el desayuno o en tus postres favoritos.</p>
+<div class="etiquetas">
+<span>Cosecha seleccionada</span>
+<span>Empaque protector</span>
+<span>Transporte refrigerado</span>
+</div>
+</section>
+
+<section class="tarjeta canje" id="canjear">
+<h2 class="titulo">Canjea tu código</h2>
+<p class="texto">Busca el código impreso en tu empaque de zarzamoras, escríbelo aquí y recibe un <strong>10% de descuento en tu siguiente compra</strong>.</p>
+<form id="formCanje">
+<div class="campo">
+<label for="codigo">CÓDIGO DEL EMPAQUE</label>
+<input type="text" id="codigo" placeholder="ZAR-XXXX-XXXX" autocomplete="off" required>
+</div>
+<div class="campo">
+<label for="nombre">TU NOMBRE (opcional)</label>
+<input type="text" id="nombre" maxlength="80">
+</div>
+<div class="campo">
+<label for="telefono">TELÉFONO / WHATSAPP (opcional)</label>
+<input type="tel" id="telefono" maxlength="30">
+</div>
+<button type="submit" class="boton" id="botonCanje">Obtener mi descuento</button>
+</form>
+<div class="mensaje" id="mensaje"></div>
+<p class="nota">Cada código se puede usar una sola vez. Presenta tu cupón en tu siguiente compra para aplicar el descuento.</p>
+</section>
+
+<section class="tarjeta" id="recetas">
+<h2 class="titulo">Recetas con zarzamoras</h2>
+<div class="recetas">
+
+<article class="receta">
+<h3>Smoothie de zarzamora y plátano</h3>
+<p class="meta">5 minutos · 2 porciones</p>
+<h4>INGREDIENTES</h4>
+<ul>
+<li>1 taza de zarzamoras VelveteBerry</li>
+<li>1 plátano maduro</li>
+<li>1 taza de leche o bebida vegetal</li>
+<li>½ taza de yogur natural</li>
+<li>1 cucharada de miel (opcional)</li>
+</ul>
+<h4>PREPARACIÓN</h4>
+<ol>
+<li>Lava bien las zarzamoras.</li>
+<li>Licúa todos los ingredientes hasta obtener una mezcla suave.</li>
+<li>Sirve frío y decora con algunas zarzamoras enteras.</li>
+</ol>
+</article>
+
+<article class="receta">
+<h3>Mermelada casera de zarzamora</h3>
+<p class="meta">35 minutos · 1 frasco mediano</p>
+<h4>INGREDIENTES</h4>
+<ul>
+<li>2 tazas de zarzamoras VelveteBerry</li>
+<li>¾ de taza de azúcar</li>
+<li>El jugo de 1 limón</li>
+</ul>
+<h4>PREPARACIÓN</h4>
+<ol>
+<li>Coloca las zarzamoras, el azúcar y el jugo de limón en una olla.</li>
+<li>Cocina a fuego medio, aplastando la fruta con una cuchara, durante 25 a 30 minutos, moviendo seguido.</li>
+<li>Cuando espese, retira del fuego y vierte en un frasco limpio. Deja enfriar y guarda en refrigeración.</li>
+</ol>
+</article>
+
+<article class="receta">
+<h3>Pay de queso con salsa de zarzamora</h3>
+<p class="meta">4 horas (con refrigeración) · 8 porciones</p>
+<h4>INGREDIENTES</h4>
+<ul>
+<li>1 ½ tazas de galletas María molidas</li>
+<li>80 g de mantequilla derretida</li>
+<li>2 barras de queso crema (190 g c/u)</li>
+<li>1 lata de leche condensada</li>
+<li>El jugo de 2 limones</li>
+<li>1 ½ tazas de zarzamoras VelveteBerry</li>
+<li>3 cucharadas de azúcar</li>
+</ul>
+<h4>PREPARACIÓN</h4>
+<ol>
+<li>Mezcla la galleta con la mantequilla y presiona en un molde para formar la base.</li>
+<li>Licúa el queso crema, la leche condensada y el jugo de limón. Vierte sobre la base y refrigera 3 horas.</li>
+<li>Cocina las zarzamoras con el azúcar y 2 cucharadas de agua por 10 minutos hasta formar una salsa. Deja enfriar.</li>
+<li>Cubre el pay con la salsa de zarzamora antes de servir.</li>
+</ol>
+</article>
+
+<article class="receta">
+<h3>Ensalada fresca con zarzamoras</h3>
+<p class="meta">10 minutos · 2 porciones</p>
+<h4>INGREDIENTES</h4>
+<ul>
+<li>3 tazas de espinaca o lechuga mixta</li>
+<li>1 taza de zarzamoras VelveteBerry</li>
+<li>50 g de queso panela o de cabra en cubos</li>
+<li>¼ de taza de nueces</li>
+<li>Aderezo: 3 cdas de aceite de oliva, 1 cda de vinagre balsámico, 1 cdita de miel</li>
+</ul>
+<h4>PREPARACIÓN</h4>
+<ol>
+<li>Coloca las hojas en un platón y agrega las zarzamoras, el queso y las nueces.</li>
+<li>Mezcla los ingredientes del aderezo y báñala justo antes de servir.</li>
+</ol>
+</article>
+
+<article class="receta">
+<h3>Avena con zarzamoras para el desayuno</h3>
+<p class="meta">10 minutos · 1 porción</p>
+<h4>INGREDIENTES</h4>
+<ul>
+<li>½ taza de avena</li>
+<li>1 taza de leche</li>
+<li>Una pizca de canela</li>
+<li>½ taza de zarzamoras VelveteBerry</li>
+<li>1 cucharada de miel o crema de cacahuate</li>
+</ul>
+<h4>PREPARACIÓN</h4>
+<ol>
+<li>Cocina la avena con la leche y la canela a fuego bajo por 5 minutos, moviendo.</li>
+<li>Sirve y cubre con las zarzamoras y la miel o crema de cacahuate.</li>
+</ol>
+</article>
+
+</div>
+</section>
+
+<footer class="pie">VelveteBerry · Donde cada fruto cuenta su historia · <a href="https://www.instagram.com/velveteberry/" target="_blank" rel="noopener noreferrer" style="color:#6b2342">@velveteberry</a></footer>
+</main>
+
+<script>
+const form = document.getElementById("formCanje");
+const mensaje = document.getElementById("mensaje");
+const boton = document.getElementById("botonCanje");
+const campoCodigo = document.getElementById("codigo");
+
+const codigoUrl = new URLSearchParams(location.search).get("codigo");
+if (codigoUrl) campoCodigo.value = codigoUrl.toUpperCase();
+
+function mostrar(tipo, contenido) {
+  mensaje.className = "mensaje visible " + tipo;
+  mensaje.replaceChildren(...contenido);
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  boton.disabled = true;
+  boton.textContent = "Verificando...";
+  try {
+    const res = await fetch("/api/canjear", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        codigo: campoCodigo.value,
+        nombre: document.getElementById("nombre").value,
+        telefono: document.getElementById("telefono").value
+      })
+    });
+    const datos = await res.json();
+    if (res.ok) {
+      const titulo = document.createElement("strong");
+      titulo.textContent = "¡Listo! Tu cupón de 10% de descuento es:";
+      const cupon = document.createElement("span");
+      cupon.className = "cupon";
+      cupon.textContent = datos.cupon;
+      const ayuda = document.createElement("small");
+      ayuda.textContent = "Toma captura de pantalla y preséntalo en tu siguiente compra.";
+      mostrar("ok", [titulo, cupon, ayuda]);
+      form.reset();
+    } else {
+      mostrar("error", [document.createTextNode(datos.error || "No se pudo canjear el código.")]);
+    }
+  } catch {
+    mostrar("error", [document.createTextNode("Error de conexión. Intenta de nuevo.")]);
+  } finally {
+    boton.disabled = false;
+    boton.textContent = "Obtener mi descuento";
+  }
+});
+</script>
+</body>
+</html>
