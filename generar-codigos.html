@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>VelveteBerry | Generar códigos de zarzamoras</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#30252a;background:#f7f1f3}
+.encabezado{text-align:center;padding:26px 18px 10px}
+.marca{margin:0;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:36px}
+.subtitulo{margin:6px 0 0;color:#725d66;font-size:14px}
+.contenedor{width:min(900px,calc(100% - 30px));margin:15px auto 35px}
+.tarjeta{background:white;border:1px solid rgba(107,35,66,.12);border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 6px 20px rgba(70,30,45,.08)}
+.titulo{margin:0 0 14px;color:#6b2342;font-family:Georgia,"Times New Roman",serif;font-size:22px}
+.fila{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.campo{flex:1;min-width:160px}
+.campo label{display:block;margin-bottom:6px;color:#6b2342;font-size:12px;font-weight:bold;letter-spacing:.5px}
+.campo input{width:100%;padding:10px 12px;border:1px solid #e3d3da;border-radius:10px;font-size:14px}
+.boton{padding:11px 20px;border:none;border-radius:24px;background:#6b2342;color:white;font-weight:bold;cursor:pointer;font-size:14px}
+.boton.sec{background:white;color:#6b2342;border:1px solid #6b2342}
+.aviso{margin:10px 0 0;font-size:13px;color:#a12a4a;min-height:1em}
+.etiquetas{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.etiqueta{border:1px dashed #c9adb9;border-radius:12px;padding:12px;text-align:center;break-inside:avoid}
+.etiqueta canvas{width:130px;height:130px}
+.etiqueta .cod{font-weight:bold;letter-spacing:1.5px;font-size:14px;margin-top:6px}
+.etiqueta .txt{font-size:11px;color:#725d66;margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px;border-bottom:1px solid #eee5e8}
+th{color:#6b2342;font-size:12px}
+.usado{color:#a12a4a;font-weight:bold}
+.libre{color:#2f7a45;font-weight:bold}
+.oculto{display:none}
+@media print{
+ body{background:white}
+ .encabezado,.no-imprimir{display:none!important}
+ .tarjeta{box-shadow:none;border:none;padding:0}
+}
+</style>
+</head>
+<body>
+<header class="encabezado">
+<h1 class="marca">VelveteBerry</h1>
+<p class="subtitulo">Generador de códigos de descuento para empaques de zarzamoras</p>
+</header>
+
+<main class="contenedor">
+<section class="tarjeta no-imprimir" id="acceso">
+<h2 class="titulo">Acceso</h2>
+<form id="formAcceso" class="fila">
+<div class="campo"><label for="password">CONTRASEÑA DE ADMINISTRADOR</label><input type="password" id="password" required></div>
+<button class="boton" type="submit">Entrar</button>
+</form>
+<p class="aviso" id="avisoAcceso"></p>
+</section>
+
+<div id="panel" class="oculto">
+<section class="tarjeta no-imprimir">
+<h2 class="titulo">Generar códigos nuevos</h2>
+<form id="formGenerar" class="fila">
+<div class="campo"><label for="lote">LOTE</label><input type="text" id="lote" placeholder="Ej. 001" maxlength="40"></div>
+<div class="campo"><label for="cantidad">CANTIDAD (máx. 200)</label><input type="number" id="cantidad" min="1" max="200" value="20" required></div>
+<button class="boton" type="submit" id="botonGenerar">Generar</button>
+</form>
+<p class="aviso" id="avisoGenerar"></p>
+</section>
+
+<section class="tarjeta oculto" id="seccionEtiquetas">
+<div class="fila no-imprimir" style="justify-content:space-between;margin-bottom:14px">
+<h2 class="titulo" style="margin:0">Etiquetas para imprimir</h2>
+<button class="boton sec" type="button" onclick="window.print()">Imprimir etiquetas</button>
+</div>
+<div class="etiquetas" id="etiquetas"></div>
+</section>
+
+<section class="tarjeta no-imprimir">
+<div class="fila" style="justify-content:space-between;margin-bottom:10px">
+<h2 class="titulo" style="margin:0">Códigos generados</h2>
+<button class="boton sec" type="button" id="recargar">Actualizar</button>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>Código</th><th>Lote</th><th>Estado</th><th>Cupón</th><th>Cliente</th><th>Teléfono</th></tr></thead>
+<tbody id="tabla"></tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script>
+let password = sessionStorage.getItem("vb_admin") || "";
+
+async function api(metodo, cuerpo) {
+  const res = await fetch("/api/codigos", {
+    method: metodo,
+    headers: { "Content-Type": "application/json", "x-admin-password": password },
+    body: cuerpo ? JSON.stringify(cuerpo) : undefined
+  });
+  const datos = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(datos.error || "Error " + res.status);
+  return datos;
+}
+
+function celda(texto, clase) {
+  const td = document.createElement("td");
+  td.textContent = texto ?? "";
+  if (clase) td.className = clase;
+  return td;
+}
+
+async function cargarTabla() {
+  const lista = await api("GET");
+  const tbody = document.getElementById("tabla");
+  tbody.replaceChildren(...lista.map((c) => {
+    const tr = document.createElement("tr");
+    tr.append(
+      celda(c.codigo),
+      celda(c.lote),
+      celda(c.canjeadoEn ? "Canjeado " + new Date(c.canjeadoEn).toLocaleDateString("es") : "Disponible", c.canjeadoEn ? "usado" : "libre"),
+      celda(c.cupon),
+      celda(c.nombre),
+      celda(c.telefono)
+    );
+    return tr;
+  }));
+}
+
+async function entrar() {
+  try {
+    await cargarTabla();
+    sessionStorage.setItem("vb_admin", password);
+    document.getElementById("acceso").classList.add("oculto");
+    document.getElementById("panel").classList.remove("oculto");
+  } catch (e) {
+    sessionStorage.removeItem("vb_admin");
+    document.getElementById("avisoAcceso").textContent = e.message;
+  }
+}
+
+document.getElementById("formAcceso").addEventListener("submit", (e) => {
+  e.preventDefault();
+  password = document.getElementById("password").value;
+  entrar();
+});
+
+document.getElementById("recargar").addEventListener("click", () => cargarTabla().catch((e) => alert(e.message)));
+
+document.getElementById("formGenerar").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const boton = document.getElementById("botonGenerar");
+  const aviso = document.getElementById("avisoGenerar");
+  boton.disabled = true;
+  aviso.textContent = "";
+  try {
+    const creados = await api("POST", {
+      lote: document.getElementById("lote").value,
+      cantidad: document.getElementById("cantidad").value
+    });
+    const contenedor = document.getElementById("etiquetas");
+    contenedor.replaceChildren();
+    const base = location.origin + "/zarzamoras.html";
+    for (const c of creados) {
+      const div = document.createElement("div");
+      div.className = "etiqueta";
+      const canvas = document.createElement("canvas");
+      await QRCode.toCanvas(canvas, base + "?codigo=" + encodeURIComponent(c.codigo) + "#canjear", { width: 260, margin: 1 });
+      const cod = document.createElement("div");
+      cod.className = "cod";
+      cod.textContent = c.codigo;
+      const txt = document.createElement("div");
+      txt.className = "txt";
+      txt.textContent = "Escanea el QR o ingresa tu código en nuestra página y obtén 10% en tu siguiente compra";
+      div.append(canvas, cod, txt);
+      contenedor.append(div);
+    }
+    document.getElementById("seccionEtiquetas").classList.remove("oculto");
+    aviso.textContent = creados.length + " códigos generados.";
+    await cargarTabla();
+  } catch (err) {
+    aviso.textContent = err.message;
+  } finally {
+    boton.disabled = false;
+  }
+});
+
+if (password) entrar();
+</script>
+</body>
+</html>
