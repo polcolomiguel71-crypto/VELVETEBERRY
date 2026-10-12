@@ -1,5 +1,5 @@
 import type { Config } from "@netlify/functions";
-import { randomInt, timingSafeEqual } from "node:crypto";
+import { randomInt } from "node:crypto";
 import { desc } from "drizzle-orm";
 import { db } from "../../db/index.js";
 import { codigos } from "../../db/schema.js";
@@ -12,26 +12,7 @@ function bloque(n: number) {
   return s;
 }
 
-function autorizado(req: Request) {
-  const esperado = Netlify.env.get("ADMIN_PASSWORD");
-  const recibido = req.headers.get("x-admin-password") ?? "";
-  if (!esperado) return false;
-  const a = Buffer.from(esperado);
-  const b = Buffer.from(recibido);
-  return a.length === b.length && timingSafeEqual(a, b);
-}
-
 export default async (req: Request) => {
-  if (!Netlify.env.get("ADMIN_PASSWORD")) {
-    return Response.json(
-      { error: "Falta configurar la variable ADMIN_PASSWORD en Netlify." },
-      { status: 503 },
-    );
-  }
-  if (!autorizado(req)) {
-    return Response.json({ error: "Contraseña incorrecta." }, { status: 401 });
-  }
-
   if (req.method === "GET") {
     const lista = await db.select().from(codigos).orderBy(desc(codigos.creadoEn)).limit(500);
     return Response.json(lista);

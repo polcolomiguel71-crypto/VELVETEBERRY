@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Zarzamoras frescas VelveteBerry. Canjea el código de tu empaque y obtén descuento en tu siguiente compra. Recetas con zarzamoras.">
+<meta name="description" content="Zarzamoras frescas VelveteBerry. Canjea el código de tu empaque y descubre tu premio sorpresa. Recetas con zarzamoras.">
 <title>VelveteBerry | Zarzamoras</title>
 <style>
 *{box-sizing:border-box}
@@ -71,7 +71,7 @@ body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#302
 
 <section class="tarjeta canje" id="canjear">
 <h2 class="titulo">Canjea tu código</h2>
-<p class="texto">Busca el código impreso en tu empaque de zarzamoras, escríbelo aquí y recibe un <strong>10% de descuento en tu siguiente compra</strong>.</p>
+<p class="texto">Busca el código impreso en tu empaque de zarzamoras, escríbelo aquí y <strong>descubre tu premio sorpresa</strong>: descuentos de 10%, 15% o 20%, un 2x1 en zarzamoras, fresas, mermelada de zarzamora o una cajita extra de zarzamoras.</p>
 <form id="formCanje">
 <div class="campo">
 <label for="codigo">CÓDIGO DEL EMPAQUE</label>
@@ -85,10 +85,10 @@ body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#302
 <label for="telefono">TELÉFONO / WHATSAPP (opcional)</label>
 <input type="tel" id="telefono" maxlength="30">
 </div>
-<button type="submit" class="boton" id="botonCanje">Obtener mi descuento</button>
+<button type="submit" class="boton" id="botonCanje">Descubrir mi premio</button>
 </form>
 <div class="mensaje" id="mensaje"></div>
-<p class="nota">Cada código se puede usar una sola vez. Presenta tu cupón en tu siguiente compra para aplicar el descuento.</p>
+<p class="nota">Cada código se puede usar una sola vez. Presenta tu cupón en tu siguiente compra para recibir tu premio.</p>
 </section>
 
 <section class="tarjeta" id="recetas">
@@ -192,7 +192,7 @@ body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#302
 </div>
 </section>
 
-<footer class="pie">VelveteBerry · Donde cada fruto cuenta su historia · <a href="https://www.instagram.com/velveteberry/" target="_blank" rel="noopener noreferrer" style="color:#6b2342">@velveteberry</a></footer>
+<footer class="pie">VelveteBerry · Donde cada fruto cuenta su historia · <a href="https://www.instagram.com/velveteberry.fresh/" target="_blank" rel="noopener noreferrer" style="color:#6b2342">@velveteberry.fresh</a></footer>
 </main>
 
 <script>
@@ -226,7 +226,7 @@ form.addEventListener("submit", async (e) => {
     const datos = await res.json();
     if (res.ok) {
       const titulo = document.createElement("strong");
-      titulo.textContent = "¡Listo! Tu cupón de 10% de descuento es:";
+      titulo.textContent = (datos.premio || "¡Ganaste un premio!") + " Tu cupón es:";
       const cupon = document.createElement("span");
       cupon.className = "cupon";
       cupon.textContent = datos.cupon;
@@ -241,7 +241,7 @@ form.addEventListener("submit", async (e) => {
     mostrar("error", [document.createTextNode("Error de conexión. Intenta de nuevo.")]);
   } finally {
     boton.disabled = false;
-    boton.textContent = "Obtener mi descuento";
+    boton.textContent = "Descubrir mi premio";
   }
 });
 </script>

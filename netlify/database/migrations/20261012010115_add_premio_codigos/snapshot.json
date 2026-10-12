@@ -1,0 +1,179 @@
+{
+  "version": "8",
+  "dialect": "postgres",
+  "id": "15db15c1-448e-4290-b0b1-8e65a7c15033",
+  "prevIds": [
+    "abb1d1d9-face-4b25-91ee-ac79e6e5fd81"
+  ],
+  "ddl": [
+    {
+      "isRlsEnabled": false,
+      "name": "codigos",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "type": "serial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "codigo",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'zarzamoras'",
+      "generated": null,
+      "identity": null,
+      "name": "producto",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "''",
+      "generated": null,
+      "identity": null,
+      "name": "lote",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "creado_en",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "canjeado_en",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "nombre",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "telefono",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "cupon",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "premio",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "codigos"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "codigos_pkey",
+      "schema": "public",
+      "table": "codigos",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "codigo"
+      ],
+      "nullsNotDistinct": false,
+      "name": "codigos_codigo_key",
+      "schema": "public",
+      "table": "codigos",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "cupon"
+      ],
+      "nullsNotDistinct": false,
+      "name": "codigos_cupon_key",
+      "schema": "public",
+      "table": "codigos",
+      "entityType": "uniques"
+    }
+  ],
+  "renames": []
+}

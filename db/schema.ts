@@ -10,4 +10,5 @@ export const codigos = pgTable("codigos", {
   nombre: text(),
   telefono: text(),
   cupon: text().unique(),
+  premio: text(),
 });
