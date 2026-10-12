@@ -46,16 +46,7 @@ th{color:#6b2342;font-size:12px}
 </header>
 
 <main class="contenedor">
-<section class="tarjeta no-imprimir" id="acceso">
-<h2 class="titulo">Acceso</h2>
-<form id="formAcceso" class="fila">
-<div class="campo"><label for="password">CONTRASEÑA DE ADMINISTRADOR</label><input type="password" id="password" required></div>
-<button class="boton" type="submit">Entrar</button>
-</form>
-<p class="aviso" id="avisoAcceso"></p>
-</section>
-
-<div id="panel" class="oculto">
+<div id="panel">
 <section class="tarjeta no-imprimir">
 <h2 class="titulo">Generar códigos nuevos</h2>
 <form id="formGenerar" class="fila">
@@ -81,7 +72,7 @@ th{color:#6b2342;font-size:12px}
 </div>
 <div style="overflow-x:auto">
 <table>
-<thead><tr><th>Código</th><th>Lote</th><th>Estado</th><th>Cupón</th><th>Cliente</th><th>Teléfono</th></tr></thead>
+<thead><tr><th>Código</th><th>Lote</th><th>Estado</th><th>Premio</th><th>Cupón</th><th>Cliente</th><th>Teléfono</th></tr></thead>
 <tbody id="tabla"></tbody>
 </table>
 </div>
@@ -91,12 +82,10 @@ th{color:#6b2342;font-size:12px}
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 <script>
-let password = sessionStorage.getItem("vb_admin") || "";
-
 async function api(metodo, cuerpo) {
   const res = await fetch("/api/codigos", {
     method: metodo,
-    headers: { "Content-Type": "application/json", "x-admin-password": password },
+    headers: { "Content-Type": "application/json" },
     body: cuerpo ? JSON.stringify(cuerpo) : undefined
   });
   const datos = await res.json().catch(() => ({}));
@@ -120,6 +109,7 @@ async function cargarTabla() {
       celda(c.codigo),
       celda(c.lote),
       celda(c.canjeadoEn ? "Canjeado " + new Date(c.canjeadoEn).toLocaleDateString("es") : "Disponible", c.canjeadoEn ? "usado" : "libre"),
+      celda(c.premio || (c.canjeadoEn ? "10% de descuento" : "")),
       celda(c.cupon),
       celda(c.nombre),
       celda(c.telefono)
@@ -127,24 +117,6 @@ async function cargarTabla() {
     return tr;
   }));
 }
-
-async function entrar() {
-  try {
-    await cargarTabla();
-    sessionStorage.setItem("vb_admin", password);
-    document.getElementById("acceso").classList.add("oculto");
-    document.getElementById("panel").classList.remove("oculto");
-  } catch (e) {
-    sessionStorage.removeItem("vb_admin");
-    document.getElementById("avisoAcceso").textContent = e.message;
-  }
-}
-
-document.getElementById("formAcceso").addEventListener("submit", (e) => {
-  e.preventDefault();
-  password = document.getElementById("password").value;
-  entrar();
-});
 
 document.getElementById("recargar").addEventListener("click", () => cargarTabla().catch((e) => alert(e.message)));
 
@@ -172,7 +144,7 @@ document.getElementById("formGenerar").addEventListener("submit", async (e) => {
       cod.textContent = c.codigo;
       const txt = document.createElement("div");
       txt.className = "txt";
-      txt.textContent = "Escanea el QR o ingresa tu código en nuestra página y obtén 10% en tu siguiente compra";
+      txt.textContent = "Escanea el QR o ingresa tu código en nuestra página y descubre tu premio sorpresa";
       div.append(canvas, cod, txt);
       contenedor.append(div);
     }
@@ -186,7 +158,7 @@ document.getElementById("formGenerar").addEventListener("submit", async (e) => {
   }
 });
 
-if (password) entrar();
+cargarTabla().catch((e) => { document.getElementById("avisoGenerar").textContent = e.message; });
 </script>
 </body>
 </html>

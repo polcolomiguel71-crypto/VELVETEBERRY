@@ -1,0 +1,1 @@
+ALTER TABLE "codigos" ADD COLUMN "premio" text;
